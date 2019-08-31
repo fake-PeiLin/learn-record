@@ -25,6 +25,8 @@ request.interceptors.response.use(response=>{
 
 // http://localhost:8888/dev-api/db.json
 
-request.get('/db.json').then(response => {
-    console.log(response.data)
-})
+// request.get('/db.json').then(response => {
+//     console.log(response.data)
+// })
+
+export default request
