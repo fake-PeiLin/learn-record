@@ -4,9 +4,11 @@ import request from '@/utils/request'
 //     console.log(response.data)
 // })
 
+const BASE_URI='/dev-api'
+
 request({
     method:'get',
-    url:'/db.json'
+    url:BASE_URI+'/db.json'
 }).then(response=>{
     console.log('get2',response.data)
 })
@@ -20,7 +22,7 @@ export default {
     getList(){
         const req=request({
             method:'get',
-            url:'/db.json'
+            url:BASE_URI+'/db.json'
         })
         console.log(req)
         return req
