@@ -7,11 +7,13 @@ module.exports={
         https:false,
         open:true,
         proxy:{
-            'dev-api':{
-                target:'http://localhost:8001',
+            // 'dev-api':{
+            [process.env.VUE_APP_BASE_API] :{
+                target: process.env.VUE_APP_SERVICE_URL,
                 changeOrigin:true,
                 pathRewrite:{
-                    '^/dev-api':'',
+                    // '^/dev-api':'',
+                    ['^' + process.env.VUE_APP_BASE_API]: ''
                 }
             }
         }

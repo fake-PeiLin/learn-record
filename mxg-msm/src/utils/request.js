@@ -6,8 +6,8 @@ import axios from 'axios'
 // })
 
 const request = axios.create({
-    // baseURL:'/dev-api',
-    baseURL:'/',
+    baseURL: process.env.VUE_APP_BASE_API,
+    // baseURL:'/',
     timeout:5000
 })
 
