@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { login, getUserInfo } from "@/api/login";
+
 export default {
   data() {
     return {
@@ -34,11 +36,13 @@ export default {
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
-        if(valid){
-
-        }else{
-            console.log('验证失败')
-            return false
+        if (valid) {
+          login(this.form.username, this.form.password).then(response => {
+            console.log(response)
+          })
+        } else {
+          console.log('验证失败')
+          return false
         }
       });
     }
