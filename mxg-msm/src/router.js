@@ -3,6 +3,7 @@ import Router from "vue-router";
 // import Login from './views/login/index.vue'
 import Login from './views/login'
 import Layout from '@/components/Layout.vue'
+import Home from './views/home/index.vue'
  
 Vue.use(Router);
 
@@ -16,7 +17,15 @@ export default new Router({
     {
       path:'/',
       name:'layout',
-      component:Layout
+      component:Layout,
+      redirect:'/home',
+      children:[
+        {
+          path:'/home',
+          component:Home,
+          meta:{title:'首页'}
+        }
+      ]
     }
   ]
 });
