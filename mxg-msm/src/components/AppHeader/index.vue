@@ -19,10 +19,33 @@
 </template>
 
 <script>
+import {logout} from '@/api/login.js' 
 export default {
     methods:{
         handleCommand(command){
-            this.$message(`点击了${command}`)
+          switch(command){
+            case 'a':
+              this.$message(`点击修改密码`)
+              break;
+            case 'b':
+              logout( localStorage.getItem('mgx-msm-token')).then(response=>{
+                const resp = response.data
+                if(resp.flag){
+                  localStorage.removeItem('mgx-msm-token')
+                  localStorage.removeItem('mgx-msm-user')
+                  this.$router.push('/login')
+                }else{
+                  this.$message({
+                    message:resp.message,
+                    type:'warning',
+                    duration:500
+                  });
+                }
+              })
+              break;
+            default:
+              break;
+          }
         }
     }
 }

@@ -52,8 +52,8 @@ import {login, getUserInfo} from '@/api/login'
                                 // 获取到了用户的数据
                                 console.log('userInfo', respUser.data)
                                 // 1. 保存 token ，用户信息
-                                localStorage.setItem('mxg-msm-user', JSON.stringify(respUser.data))
-                                localStorage.setItem('mxg-msm-token', resp.data.token)
+                                localStorage.setItem('mgx-msm-user', JSON.stringify(respUser.data))
+                                localStorage.setItem('mgx-msm-token', resp.data.token)
                                 // 前往首页 
                                 this.$router.push('/')
                             }else {
