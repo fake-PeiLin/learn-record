@@ -28,11 +28,11 @@ export default {
               this.$message(`点击修改密码`)
               break;
             case 'b':
-              logout( localStorage.getItem('mgx-msm-token')).then(response=>{
+              logout( localStorage.getItem('mxg-msm-token')).then(response=>{
                 const resp = response.data
                 if(resp.flag){
-                  localStorage.removeItem('mgx-msm-token')
-                  localStorage.removeItem('mgx-msm-user')
+                  localStorage.removeItem('mxg-msm-token')
+                  localStorage.removeItem('mxg-msm-user')
                   this.$router.push('/login')
                 }else{
                   this.$message({
