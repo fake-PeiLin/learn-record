@@ -21,6 +21,15 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      @size-change="fetchData"
+      @current-change="fetchData"
+      :current-page="currentPage"
+      :page-sizes="[10, 20, 50]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    ></el-pagination>
   </div>
 </template>
 
@@ -37,7 +46,11 @@ const payTypeOptions = [
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      total: 0,
+      currentPage: 1,
+      pageSize: 10,
+      searchMap: {}
     };
   },
 
@@ -47,11 +60,14 @@ export default {
 
   methods: {
     fetchData() {
-      memberApi.getList().then(response => {
-        const resp = response.data;
-        this.list = resp.data;
-        console.log(resp);
-      });
+      // memberApi.getList().then(response => {
+      memberApi
+        .search(this.currentPage, this.pageSize, this.searchMap)
+        .then(response => {
+          const resp = response.data;
+          this.list = resp.data.rows;
+          this.total = resp.data.total;
+        });
     },
     handleEdit(id) {
       console.log("编辑", id);
