@@ -2,13 +2,13 @@
   <div>
     <el-form ref="searchForm" :inline="true" :model="searchMap" style="margin-top:20px">
       <el-form-item prop="cardNum">
-        <el-input v-model="searchMap.cardNum" placeholder="会员卡号"></el-input>
+        <el-input v-model="searchMap.cardNum" placeholder="会员卡号" style="width:200px"></el-input>
       </el-form-item>
       <el-form-item prop="name">
-        <el-input v-model="searchMap.name" placeholder="会员名字"></el-input>
+        <el-input v-model="searchMap.name" placeholder="会员名字" style="width:200px"></el-input>
       </el-form-item>
       <el-form-item prop="payType">
-        <el-select v-model="searchMap.payType" placeholder="支付类型">
+        <el-select v-model="searchMap.payType" placeholder="支付类型" style="width:110px">
           <el-option
             v-for="option in payTypeOptions"
             :key="option.type"
@@ -17,16 +17,9 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item prop="birthday">
-        <el-date-picker
-          value-format="yyyy-MM-dd"
-          v-model="searchMap.birthday"
-          type="date"
-          placeholder="出生日期"
-        ></el-date-picker>
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="fetchData">查询</el-button>
+        <el-button type="primary" @click="dialogFormVisible=true">新增</el-button>
         <el-button @click="resetForm('searchForm')">重置</el-button>
       </el-form-item>
     </el-form>
@@ -60,6 +53,57 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total"
     ></el-pagination>
+    <el-dialog title="会员编辑" :visible.sync="dialogFormVisible" width="500px">
+      <el-form
+        ref="pojoForm"
+        label-width="100px"
+        label-position="right"
+        style="width:400px"
+        :model="pojo"
+      >
+        <el-form-item label="会员卡号">
+          <el-input v-model="pojo.cardNum"></el-input>
+        </el-form-item>
+        <el-form-item label="会员姓名">
+          <el-input v-model="pojo.name"></el-input>
+        </el-form-item>
+        <el-form-item label="会员生日">
+          <el-date-picker
+            style="width:200px"
+            value-format="yyyy-MM-dd"
+            v-model="pojo.birthday"
+            type="date"
+            placeholder="会员生日"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="手机号码">
+          <el-input v-model="pojo.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="开卡金额">
+          <el-input v-model="pojo.money"></el-input>
+        </el-form-item>
+        <el-form-item label="可用积分">
+          <el-input v-model="pojo.integral"></el-input>
+        </el-form-item>
+        <el-form-item label="支付类型">
+          <el-select v-model="pojo.payType" placeholder="支付类型" style="width:110px">
+            <el-option
+              v-for="option in payTypeOptions"
+              :key="option.type"
+              :label="option.name"
+              :value="option.type"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="会员地址">
+          <el-input v-model="pojo.address"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -86,7 +130,9 @@ export default {
         payType: "",
         birthday: ""
       },
-      payTypeOptions
+      payTypeOptions,
+      dialogFormVisible: false,
+      pojo: {}
     };
   },
 
