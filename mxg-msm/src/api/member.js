@@ -17,7 +17,7 @@ export default {
     },
     
     add(pojo){
-        request({
+        return request({
             url:'/member',
             method:'post',
             data:pojo

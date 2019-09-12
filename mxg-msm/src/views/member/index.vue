@@ -97,7 +97,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="会员地址">
-          <el-input v-model="pojo.address"></el-input>
+          <el-input type="textarea" v-model="pojo.address"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -183,6 +183,18 @@ export default {
       this.$refs[formName].validate(valid=>{
         if(valid){
           console.log('addData')
+          memberApi.add(this.pojo).then(response=>{
+            const resp = response.data
+            if(resp.flag){
+              this.fetchData()
+              this.dialogFormVisible=false
+            }else{
+              this.$message({
+                message:resp.message,
+                type:'warning'
+              })
+            }
+          })
         }else{
           return false
         }
