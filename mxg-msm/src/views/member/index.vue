@@ -18,10 +18,15 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-date-picker value-format="yyyy-MM-dd" v-model="searchMap.birthday" type="date" placeholder="出生日期"></el-date-picker>
+        <el-date-picker
+          value-format="yyyy-MM-dd"
+          v-model="searchMap.birthday"
+          type="date"
+          placeholder="出生日期"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="fetchData" >查询</el-button>
+        <el-button type="primary" @click="fetchData">查询</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="list" height="380" border style="width: 100%">
@@ -46,8 +51,8 @@
       </el-table-column>
     </el-table>
     <el-pagination
-      @size-change="fetchData"
-      @current-change="fetchData"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
       :current-page="currentPage"
       :page-sizes="[10, 20, 50]"
       :page-size="pageSize"
@@ -84,6 +89,16 @@ export default {
   },
 
   methods: {
+    handleSizeChange(val) {
+      // console.log(val);
+      this.pageSize = val;
+      this.fetchData();
+    },
+    handleCurrentChange(val) {
+      // console.log(val);
+      this.currentPage = val;
+      this.fetchData();
+    },
     fetchData() {
       // memberApi.getList().then(response => {
       memberApi
