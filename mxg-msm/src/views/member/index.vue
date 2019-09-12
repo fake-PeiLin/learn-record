@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-form ref="searchForm" :inline="true" :model="searchMap" style="margin-top:20px">
-      <el-form-item>
+      <el-form-item prop="cardNum">
         <el-input v-model="searchMap.cardNum" placeholder="会员卡号"></el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item prop="name">
         <el-input v-model="searchMap.name" placeholder="会员名字"></el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item prop="payType">
         <el-select v-model="searchMap.payType" placeholder="支付类型">
           <el-option
             v-for="option in payTypeOptions"
@@ -17,7 +17,7 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item>
+      <el-form-item prop="birthday">
         <el-date-picker
           value-format="yyyy-MM-dd"
           v-model="searchMap.birthday"
@@ -27,6 +27,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="fetchData">查询</el-button>
+        <el-button @click="resetForm('searchForm')">重置</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="list" height="380" border style="width: 100%">
@@ -78,8 +79,13 @@ export default {
       list: [],
       total: 0,
       currentPage: 1,
-      pageSize: 10,
-      searchMap: {},
+      pageSize: 20, //中途发现跟视频不同才更改
+      searchMap: {
+        cardNum: "",
+        name: "",
+        payType: "",
+        birthday: ""
+      },
       payTypeOptions
     };
   },
@@ -114,9 +120,12 @@ export default {
     },
     handleDelete(id) {
       console.log("删除", id);
+    },
+    resetForm(formName) {
+      console.log("重置", formName);
+      this.$refs[formName].resetFields();
     }
   },
-
   filters: {
     payTypeFilter(type) {
       const payObj = payTypeOptions.find(obj => obj.type === type);
