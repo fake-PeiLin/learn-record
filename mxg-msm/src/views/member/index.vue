@@ -1,5 +1,29 @@
 <template>
   <div>
+    <el-form ref="searchForm" :inline="true" :model="searchMap" style="margin-top:20px">
+      <el-form-item>
+        <el-input v-model="searchMap.cardNum" placeholder="会员卡号"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-input v-model="searchMap.name" placeholder="会员名字"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-select v-model="searchMap.payType" placeholder="支付类型">
+          <el-option
+            v-for="option in payTypeOptions"
+            :key="option.type"
+            :label="option.name"
+            :value="option.type"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-date-picker value-format="yyyy-MM-dd" v-model="searchMap.birthday" type="date" placeholder="出生日期"></el-date-picker>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="fetchData" >查询</el-button>
+      </el-form-item>
+    </el-form>
     <el-table :data="list" height="380" border style="width: 100%">
       <el-table-column type="index" label="序号"></el-table-column>
       <el-table-column prop="cardNum" label="会员卡号"></el-table-column>
@@ -50,7 +74,8 @@ export default {
       total: 0,
       currentPage: 1,
       pageSize: 10,
-      searchMap: {}
+      searchMap: {},
+      payTypeOptions
     };
   },
 
