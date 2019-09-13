@@ -248,6 +248,14 @@ export default {
     },
     handleDelete(id) {
       console.log("删除", id);
+      this.$confirm('确认删除这条记录吗？','提示',{
+        confirmButtonText:'确认',
+        cancelButtonText:'取消',
+      }).then(()=>{
+        console.log('确认')
+      }).catch(()=>{
+        console.log('取消')
+      })
     }
   },
   filters: {
