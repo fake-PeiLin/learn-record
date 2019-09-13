@@ -253,6 +253,18 @@ export default {
         cancelButtonText:'取消',
       }).then(()=>{
         console.log('确认')
+        memberApi.deleteById(id).then(response=>{
+          const resp=response.data
+
+          this.$message({
+            message:resp.message,
+            type:resp.flag ? 'success':'error'
+          })
+
+          if(resp.flag){
+            this.fetchData()
+          }
+        })
       }).catch(()=>{
         console.log('取消')
       })
