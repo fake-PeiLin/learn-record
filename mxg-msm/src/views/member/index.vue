@@ -102,7 +102,11 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addData('pojoForm')">确 定</el-button>
+        <!-- <el-button type="primary" @click="addData('pojoForm')">确 定</el-button> -->
+        <el-button
+          type="primary"
+          @click="pojo.id===null ? addData('pojoForm'):updateData('pojoForm')"
+        >确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -134,6 +138,7 @@ export default {
       payTypeOptions,
       dialogFormVisible: false,
       pojo: {
+        id: null,
         cardNum: "",
         name: "",
         birthday: "",
@@ -178,12 +183,6 @@ export default {
           this.total = resp.data.total;
         });
     },
-    handleEdit(id) {
-      console.log("编辑", id);
-    },
-    handleDelete(id) {
-      console.log("删除", id);
-    },
     resetForm(formName) {
       console.log("重置", formName);
       this.$refs[formName].resetFields();
@@ -215,6 +214,40 @@ export default {
       this.$nextTick(() => {
         this.$refs["pojoForm"].resetFields();
       });
+    },
+    handleEdit(id) {
+      console.log("编辑", id);
+      this.handleAdd();
+      memberApi.getById(id).then(response => {
+        const resp = response.data;
+        if (resp.flag) {
+          this.pojo = resp.data;
+        }
+      });
+    },
+    updateData(formName){
+      console.log('updateData')
+      this.$refs[formName].validate(valid=>{
+        if(valid){
+          memberApi.update(this.pojo).then(response=>{
+            const resp=response.data
+            if(resp.flag){
+              this.fetchData()
+              this.dialogFormVisible=false
+            }else{
+              this.$message({
+                message:resp.message,
+                type:'warning'
+              })
+            }
+          })
+        }else{
+          return false
+        }
+      })
+    },
+    handleDelete(id) {
+      console.log("删除", id);
     }
   },
   filters: {
