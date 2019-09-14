@@ -12,6 +12,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="fetchData">查询</el-button>
+        <el-button @click="resetForm('searchForm')">重置</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="list" height="380" border style="width: 100%">
@@ -84,6 +85,9 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
       this.fetchData();
+    },
+    resetForm(formName){
+        this.$refs[formName].resetFields()
     }
   }
 };
