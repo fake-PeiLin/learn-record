@@ -17,6 +17,16 @@
           ></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item prop="birthday">
+        <!-- value-format 是指定绑定值的格式 -->
+        <el-date-picker
+          style="width: 200px"
+          value-format="yyyy-MM-dd"
+          v-model="searchMap.birthday"
+          type="date"
+          placeholder="出生日期"
+        ></el-date-picker>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="fetchData">查询</el-button>
         <el-button type="primary" @click="handleAdd">新增</el-button>
@@ -225,49 +235,51 @@ export default {
         }
       });
     },
-    updateData(formName){
-      console.log('updateData')
-      this.$refs[formName].validate(valid=>{
-        if(valid){
-          memberApi.update(this.pojo).then(response=>{
-            const resp=response.data
-            if(resp.flag){
-              this.fetchData()
-              this.dialogFormVisible=false
-            }else{
+    updateData(formName) {
+      console.log("updateData");
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          memberApi.update(this.pojo).then(response => {
+            const resp = response.data;
+            if (resp.flag) {
+              this.fetchData();
+              this.dialogFormVisible = false;
+            } else {
               this.$message({
-                message:resp.message,
-                type:'warning'
-              })
+                message: resp.message,
+                type: "warning"
+              });
             }
-          })
-        }else{
-          return false
+          });
+        } else {
+          return false;
         }
-      })
+      });
     },
     handleDelete(id) {
       console.log("删除", id);
-      this.$confirm('确认删除这条记录吗？','提示',{
-        confirmButtonText:'确认',
-        cancelButtonText:'取消',
-      }).then(()=>{
-        console.log('确认')
-        memberApi.deleteById(id).then(response=>{
-          const resp=response.data
-
-          this.$message({
-            message:resp.message,
-            type:resp.flag ? 'success':'error'
-          })
-
-          if(resp.flag){
-            this.fetchData()
-          }
-        })
-      }).catch(()=>{
-        console.log('取消')
+      this.$confirm("确认删除这条记录吗？", "提示", {
+        confirmButtonText: "确认",
+        cancelButtonText: "取消"
       })
+        .then(() => {
+          console.log("确认");
+          memberApi.deleteById(id).then(response => {
+            const resp = response.data;
+
+            this.$message({
+              message: resp.message,
+              type: resp.flag ? "success" : "error"
+            });
+
+            if (resp.flag) {
+              this.fetchData();
+            }
+          });
+        })
+        .catch(() => {
+          console.log("取消");
+        });
     }
   },
   filters: {
