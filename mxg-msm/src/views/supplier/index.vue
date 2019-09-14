@@ -13,6 +13,15 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[10, 20, 50]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    ></el-pagination>
   </div>
 </template>
 
@@ -21,7 +30,11 @@ import supplierApi from "@/api/supplier";
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      pageSize: 10,
+      currentPage: 1,
+      total: 0,
+      searchMap: {}
     };
   },
 
@@ -30,16 +43,29 @@ export default {
   },
   methods: {
     fetchData() {
-      supplierApi.getList().then(response => {
-        this.list = response.data.data;
-        console.log(this.list);
-      });
+      supplierApi
+        .search(this.currentPage, this.pageSize, this.searchMap)
+        .then(response => {
+          const data = response.data.data;
+          this.list = data.rows;
+          this.total = data.total;
+          console.log(this.list);
+        });
     },
-    handleEdit(id){
-        console.log('编辑',id)
+    handleEdit(id) {
+      console.log("编辑", id);
     },
-    handleDelete(id){
-        console.log('删除',id)
+    handleDelete(id) {
+      console.log("删除", id);
+    },
+
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.fetchData();
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.fetchData();
     }
   }
 };

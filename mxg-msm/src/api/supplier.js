@@ -6,5 +6,13 @@ export default {
             url: '/supplier/list',
             method: 'get'
         })
+    },
+
+    search(page,size,searchMap){
+        return request({
+            url:`/supplier/list/search/${page}/${size}`,
+            method:'post',
+            data:searchMap
+        })
     }
 }
