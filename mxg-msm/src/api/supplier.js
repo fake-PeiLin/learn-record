@@ -14,5 +14,13 @@ export default {
             method:'post',
             data:searchMap
         })
+    },
+
+    add(pojo){
+        return request({
+            url:'/supplier',
+            method:'post',
+            data:pojo
+        })
     }
 }
