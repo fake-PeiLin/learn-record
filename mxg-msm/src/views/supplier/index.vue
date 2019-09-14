@@ -63,7 +63,10 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addData('pojoForm')">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="pojo.id === null ? addData('pojoForm'): updateData('pojoForm')"
+        >确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -85,10 +88,11 @@ export default {
       },
       dialogFormVisible: false,
       pojo: {
-          name:'',
-          linkman:'',
-          mobile:'',
-          remark:''
+        id: null,
+        name: "",
+        linkman: "",
+        mobile: "",
+        remark: ""
       },
       rules: {
         name: [{ required: true, message: "供应商不能为空", trigger: "blur" }],
@@ -113,13 +117,6 @@ export default {
           console.log(this.list);
         });
     },
-    handleEdit(id) {
-      console.log("编辑", id);
-    },
-    handleDelete(id) {
-      console.log("删除", id);
-    },
-
     handleSizeChange(val) {
       this.pageSize = val;
       this.fetchData();
@@ -137,25 +134,62 @@ export default {
         this.$refs["pojoForm"].resetFields();
       });
     },
-    addData(formName){
-        this.$refs[formName].validate(valid=>{
-            if(valid){
-                supplierApi.add(this.pojo).then(response=>{
-                    const resp=response.data
-                    if(resp.flag){
-                        this.fetchData()
-                        this.dialogFormVisible=false
-                    }else{
-                        this.$message({
-                            message:resp.message,
-                            type:'warning'
-                        })
-                    }
-                })
-            }else{
-                return false
+    addData(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          supplierApi.add(this.pojo).then(response => {
+            const resp = response.data;
+            if (resp.flag) {
+              this.fetchData();
+              this.dialogFormVisible = false;
+            } else {
+              this.$message({
+                message: resp.message,
+                type: "warning"
+              });
             }
-        })
+          });
+        } else {
+          return false;
+        }
+      });
+    },
+    handleEdit(id) {
+      this.handleAdd();
+      supplierApi.getById(id).then(response => {
+        const resp = response.data;
+        if (resp.flag) {
+          this.pojo = resp.data;
+        } else {
+          this.$message({
+            message: resp.message,
+            type: "warning"
+          });
+        }
+      });
+    },
+    updateData(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          supplierApi.update(this.pojo).then(response => {
+            const resp = response.data;
+            if (resp.flag) {
+              this.fetchData();
+              this.dialogFormVisible = false;
+            } else {
+              this.$message({
+                message: resp.messsage,
+                type: "warning"
+              });
+            }
+          });
+        } else {
+          return false;
+        }
+      });
+    },
+    handleDelete(id) {
+      console.log("删除", id);
     }
   }
 };

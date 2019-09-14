@@ -8,19 +8,34 @@ export default {
         })
     },
 
-    search(page,size,searchMap){
+    search(page, size, searchMap) {
         return request({
-            url:`/supplier/list/search/${page}/${size}`,
-            method:'post',
-            data:searchMap
+            url: `/supplier/list/search/${page}/${size}`,
+            method: 'post',
+            data: searchMap
         })
     },
 
-    add(pojo){
+    add(pojo) {
         return request({
-            url:'/supplier',
-            method:'post',
-            data:pojo
+            url: '/supplier',
+            method: 'post',
+            data: pojo
+        })
+    },
+
+    getById(id) {
+        return request({
+            url: `/supplier/${id}`,
+            method: 'get'
+        })
+    },
+
+    update(pojo) {
+        return request({
+            url: `/supplier/${pojo.id}`,
+            method: 'put',
+            data: pojo
         })
     }
 }
