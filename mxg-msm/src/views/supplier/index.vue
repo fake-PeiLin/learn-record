@@ -190,6 +190,23 @@ export default {
     },
     handleDelete(id) {
       console.log("删除", id);
+      this.$confirm('确认删除这条数据吗?','提示',{
+          confirmButtonText:'确认',
+          cancleButtonText:'取消'
+      }).then(()=>{
+          supplierApi.deleteById(id).then(response=>{
+              const resp=response.data
+              this.$message({
+                  message:resp.message,
+                  type:resp.flag ? 'success': 'error'
+              })
+              if(resp.flag){
+                  this.fetchData()
+              }
+          })
+      }).catch(()=>{
+          
+      })
     }
   }
 };
