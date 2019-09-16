@@ -10,7 +10,7 @@
       <el-form-item prop="supplierName">
         <el-input
           readonly
-          @click.native="dialogSupplierVisisble=true"
+          @click.native="dialogSupplierVisible=true"
           v-model="searchMap.supplierName"
           placeholder="选择供应商"
           style="width:200px"
@@ -48,8 +48,8 @@
       :total="total"
     ></el-pagination>
 
-    <el-dialog title="选择供应商" :visible.sync="dialogSupplierVisisble" width="500px">
-      <supplier :isDialog="true"></supplier>
+    <el-dialog title="选择供应商" :visible.sync="dialogSupplierVisible" width="500px">
+      <supplier @option-supplier="optionSupplier" :isDialog="true"></supplier>
     </el-dialog>
   </div>
 </template>
@@ -67,7 +67,7 @@ export default {
       currentPage: 1,
       total: 0,
       searchMap: {},
-      dialogSupplierVisisble: false
+      dialogSupplierVisible: false
     };
   },
 
@@ -107,6 +107,13 @@ export default {
     handleDelete() {
       this.currentPage = val;
       this.fetchData();
+    },
+
+    optionSupplier(currentRow) {
+      console.log("parent", currentRow);
+      this.searchMap.supplierName = currentRow.name;
+      this.searchMap.supplierId = currentRow.id;
+      this.dialogSupplierVisible = false;
     }
   }
 };

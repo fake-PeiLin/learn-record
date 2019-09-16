@@ -16,7 +16,14 @@
         <el-button v-if="!isDialog" @click="resetForm('searchForm')">重置</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="list" height="380" border style="width: 100%">
+    <el-table
+      hightlight-current-row
+      @current-change="handleCurrentChange"
+      :data="list"
+      height="380"
+      border
+      style="width: 100%"
+    >
       <el-table-column type="index" label="序号"></el-table-column>
       <el-table-column prop="name" label="供应商名称"></el-table-column>
       <el-table-column prop="linkman" label="联系人"></el-table-column>
@@ -78,7 +85,7 @@ export default {
   props: {
     isDialog: Boolean
   },
-  
+
   data() {
     return {
       list: [],
@@ -211,6 +218,11 @@ export default {
           });
         })
         .catch(() => {});
+    },
+
+    handleCurrentChange(currentRow) {
+      console.log(currentRow);
+      this.$emit("option-supplier", currentRow);
     }
   }
 };
