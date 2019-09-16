@@ -49,7 +49,7 @@
     ></el-pagination>
 
     <el-dialog title="选择供应商" :visible.sync="dialogSupplierVisisble" width="500px">
-      <supplier></supplier>
+      <supplier :isDialog="true"></supplier>
     </el-dialog>
   </div>
 </template>

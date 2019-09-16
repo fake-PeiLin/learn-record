@@ -4,25 +4,25 @@
       <el-form-item prop="name">
         <el-input v-model="searchMap.name" placeholder="供应商名称" style="width:200px"></el-input>
       </el-form-item>
-      <el-form-item prop="linkman">
+      <el-form-item prop="linkman" v-if="!isDialog">
         <el-input v-model="searchMap.linkman" placeholder="联系人" style="width:200px"></el-input>
       </el-form-item>
-      <el-form-item prop="mobile">
+      <el-form-item prop="mobile" v-if="!isDialog">
         <el-input v-model="searchMap.mobile" placeholder="联系电话" style="width:200px"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="fetchData">查询</el-button>
-        <el-button type="primary" @click="handleAdd">新增</el-button>
-        <el-button @click="resetForm('searchForm')">重置</el-button>
+        <el-button v-if="!isDialog" type="primary" @click="handleAdd">新增</el-button>
+        <el-button v-if="!isDialog" @click="resetForm('searchForm')">重置</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="list" height="380" border style="width: 100%">
       <el-table-column type="index" label="序号"></el-table-column>
       <el-table-column prop="name" label="供应商名称"></el-table-column>
       <el-table-column prop="linkman" label="联系人"></el-table-column>
-      <el-table-column prop="mobile" label="联系电话"></el-table-column>
-      <el-table-column prop="remark" label="备注"></el-table-column>
-      <el-table-column label="操作" width="150">
+      <el-table-column v-if="!isDialog" prop="mobile" label="联系电话"></el-table-column>
+      <el-table-column v-if="!isDialog" prop="remark" label="备注"></el-table-column>
+      <el-table-column v-if="!isDialog" label="操作" width="150">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
@@ -30,12 +30,12 @@
       </el-table-column>
     </el-table>
     <el-pagination
+      :layout="!isDialog ? 'total, sizes, prev, pager, next, jumper': 'prev,pager,next'"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
       :page-sizes="[10, 20, 50]"
       :page-size="pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
       :total="total"
     ></el-pagination>
 
@@ -75,6 +75,10 @@
 <script>
 import supplierApi from "@/api/supplier";
 export default {
+  props: {
+    isDialog: Boolean
+  },
+  
   data() {
     return {
       list: [],
@@ -190,23 +194,23 @@ export default {
     },
     handleDelete(id) {
       console.log("删除", id);
-      this.$confirm('确认删除这条数据吗?','提示',{
-          confirmButtonText:'确认',
-          cancleButtonText:'取消'
-      }).then(()=>{
-          supplierApi.deleteById(id).then(response=>{
-              const resp=response.data
-              this.$message({
-                  message:resp.message,
-                  type:resp.flag ? 'success': 'error'
-              })
-              if(resp.flag){
-                  this.fetchData()
-              }
-          })
-      }).catch(()=>{
-          
+      this.$confirm("确认删除这条数据吗?", "提示", {
+        confirmButtonText: "确认",
+        cancleButtonText: "取消"
       })
+        .then(() => {
+          supplierApi.deleteById(id).then(response => {
+            const resp = response.data;
+            this.$message({
+              message: resp.message,
+              type: resp.flag ? "success" : "error"
+            });
+            if (resp.flag) {
+              this.fetchData();
+            }
+          });
+        })
+        .catch(() => {});
     }
   }
 };
