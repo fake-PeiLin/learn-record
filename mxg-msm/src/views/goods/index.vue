@@ -18,6 +18,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="fetchData">查询</el-button>
+        <el-button @click="$refs['searchForm'].resetFields()">重置</el-button>
       </el-form-item>
     </el-form>
 
@@ -66,7 +67,11 @@ export default {
       pageSize: 10,
       currentPage: 1,
       total: 0,
-      searchMap: {},
+      searchMap: {
+          name:'',
+          code:'',
+          supplierName:''
+      },
       dialogSupplierVisible: false
     };
   },

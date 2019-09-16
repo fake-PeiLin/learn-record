@@ -17,7 +17,7 @@
       </el-form-item>
     </el-form>
     <el-table
-      hightlight-current-row
+      :hightlight-current-row="isDialog"
       @current-change="handleCurrentChange"
       :data="list"
       height="380"
@@ -46,7 +46,7 @@
       :total="total"
     ></el-pagination>
 
-    <el-dialog title="供应商编辑" :visible.sync="dialogFormVisible" width="500px">
+    <el-dialog v-if="!isDialog" title="供应商编辑" :visible.sync="dialogFormVisible" width="500px">
       <el-form
         :rules="rules"
         ref="pojoForm"
