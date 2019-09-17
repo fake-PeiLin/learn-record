@@ -26,7 +26,7 @@ export default {
 
     update(pojo) {
         return request({
-            url: `/goods/${id}`,
+            url: `/goods/${pojo.id}`,
             method: 'put',
             data: pojo
         })

@@ -95,11 +95,11 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <!-- <el-button
+        <el-button
           type="primary"
           @click="pojo.id === null ? addData('pojoForm'): updateData('pojoForm')"
-        >确 定</el-button>-->
-        <el-button type="primary" @click="addData('pojoForm')">确 定</el-button>
+        >确 定</el-button>
+        <!-- <el-button type="primary" @click="addData('pojoForm')">确 定</el-button> -->
       </div>
     </el-dialog>
   </div>
@@ -136,6 +136,7 @@ export default {
         ]
       },
       pojo: {
+        id: null,
         name: "",
         code: "",
         spec: "",
@@ -241,6 +242,28 @@ export default {
           this.pojo = resp.data;
         }
       });
+    },
+
+    updateData(formName){
+      console.log('更新')
+      this.$refs[formName].validate(valid=>{
+        if(valid){
+          goodsApi.update(this.pojo).then(response=>{
+            const resp = response.data
+            if(resp.flag){
+              this.fetchData()
+              this.dialogFormVisible = false
+            }else{
+              this.$message({
+                message:resp.message,
+                type:'warning'
+              })
+            }
+          })
+        }else{
+          return false
+        }
+      })
     }
   }
 };
