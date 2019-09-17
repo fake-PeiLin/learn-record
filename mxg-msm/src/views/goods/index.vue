@@ -210,18 +210,18 @@ export default {
     addData(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-            goodsApi.add(this.pojo).then(response=>{
-                const resp=response.data
-                if(resp.flag){
-                    this.fetchData()
-                    this.dialogFormVisible=false
-                }else{
-                    this.$message({
-                        message:resp.message,
-                        type:'warning'
-                    })
-                }
-            })
+          goodsApi.add(this.pojo).then(response => {
+            const resp = response.data;
+            if (resp.flag) {
+              this.fetchData();
+              this.dialogFormVisible = false;
+            } else {
+              this.$message({
+                message: resp.message,
+                type: "warning"
+              });
+            }
+          });
         } else {
           return false;
         }
@@ -232,6 +232,16 @@ export default {
       this.isEdit = true;
       this.dialogSupplierVisible = true;
     },
+
+    handleEdit(id) {
+      this.handleAdd();
+      goodsApi.getById(id).then(response => {
+        const resp = response.data;
+        if (resp.flag) {
+          this.pojo = resp.data;
+        }
+      });
+    }
   }
 };
 </script>

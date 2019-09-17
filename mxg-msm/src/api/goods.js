@@ -9,10 +9,25 @@ export default {
         })
     },
 
-    add(pojo){
+    add(pojo) {
         return request({
-            url:`/goods`,
-            method:'post',
+            url: `/goods`,
+            method: 'post',
+            data: pojo
+        })
+    },
+
+    getById(id) {
+        return request({
+            url: `/goods/${id}`,
+            method: 'get'
+        })
+    },
+
+    update(pojo) {
+        return request({
+            url: `/goods/${id}`,
+            method: 'put',
             data: pojo
         })
     }
