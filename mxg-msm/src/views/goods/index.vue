@@ -210,7 +210,18 @@ export default {
     addData(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log("提交新增表单");
+            goodsApi.add(this.pojo).then(response=>{
+                const resp=response.data
+                if(resp.flag){
+                    this.fetchData()
+                    this.dialogFormVisible=false
+                }else{
+                    this.$message({
+                        message:resp.message,
+                        type:'warning'
+                    })
+                }
+            })
         } else {
           return false;
         }
@@ -220,7 +231,7 @@ export default {
     editOptionSupplier() {
       this.isEdit = true;
       this.dialogSupplierVisible = true;
-    }
+    },
   }
 };
 </script>
