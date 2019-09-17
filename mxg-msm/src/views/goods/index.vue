@@ -244,26 +244,47 @@ export default {
       });
     },
 
-    updateData(formName){
-      console.log('更新')
-      this.$refs[formName].validate(valid=>{
-        if(valid){
-          goodsApi.update(this.pojo).then(response=>{
-            const resp = response.data
-            if(resp.flag){
-              this.fetchData()
-              this.dialogFormVisible = false
-            }else{
+    updateData(formName) {
+      console.log("更新");
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          goodsApi.update(this.pojo).then(response => {
+            const resp = response.data;
+            if (resp.flag) {
+              this.fetchData();
+              this.dialogFormVisible = false;
+            } else {
               this.$message({
-                message:resp.message,
-                type:'warning'
-              })
+                message: resp.message,
+                type: "warning"
+              });
             }
-          })
-        }else{
-          return false
+          });
+        } else {
+          return false;
         }
+      });
+    },
+
+    handleDelete(id) {
+      console.log(id);
+      this.$confirm("确认删除这条数据吗?", "提示", {
+        confirmButtonText: "确认",
+        cancleButtonText: "取消"
       })
+        .then(() => {
+          goodsApi.deleteById(id).then(response => {
+            const resp = response.data;
+            this.$message({
+              message: resp.message,
+              type: resp.flag ? "success" : "error"
+            });
+            if (resp.flag) {
+              this.fetchData();
+            }
+          });
+        })
+        .catch(() => {});
     }
   }
 };
