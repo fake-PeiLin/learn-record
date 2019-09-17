@@ -85,7 +85,12 @@
         </el-form-item>
 
         <el-form-item label="供应商" prop="supplierName">
-          <el-input v-model="pojo.supplierName"></el-input>
+          <el-input
+            readonly
+            @click.native="editOptionSupplier"
+            v-model="pojo.supplierName"
+            placeholder="选择供应商"
+          ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -119,8 +124,28 @@ export default {
       },
       dialogSupplierVisible: false,
       dialogFormVisible: false,
-      rules: {},
-      pojo: {}
+      rules: {
+        name: [
+          { required: true, message: "商品名称不能为空", trigger: "blur" }
+        ],
+        code: [
+          { required: true, message: "商品编码不能为空", trigger: "blur" }
+        ],
+        retailPrice: [
+          { required: true, message: "零售价不能为空", trigger: "blur" }
+        ]
+      },
+      pojo: {
+        name: "",
+        code: "",
+        spec: "",
+        retailPrice: 0.0,
+        purchasePrice: 0.0,
+        storageNum: 0,
+        supplierName: "",
+        supplierId: null
+      },
+      isEdit: false
     };
   },
 
@@ -164,8 +189,14 @@ export default {
 
     optionSupplier(currentRow) {
       console.log("parent", currentRow);
-      this.searchMap.supplierName = currentRow.name;
-      this.searchMap.supplierId = currentRow.id;
+      if (this.isEdit) {
+        this.pojo.supplierName = currentRow.name;
+        this.pojo.supplierId = currentRow.id;
+      } else {
+        this.searchMap.supplierName = currentRow.name;
+        this.searchMap.supplierId = currentRow.id;
+      }
+      this.isEdit = false;
       this.dialogSupplierVisible = false;
     },
 
@@ -174,6 +205,21 @@ export default {
       this.$nextTick(() => {
         this.$refs["pojoForm"].resetFields();
       });
+    },
+
+    addData(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          console.log("提交新增表单");
+        } else {
+          return false;
+        }
+      });
+    },
+
+    editOptionSupplier() {
+      this.isEdit = true;
+      this.dialogSupplierVisible = true;
     }
   }
 };
