@@ -18,7 +18,7 @@
     </el-form>
     <el-table
       :hightlight-current-row="isDialog"
-      @current-change="handleCurrentChange"
+      @current-change="clickCurrentChange"
       :data="list"
       height="380"
       border
@@ -220,8 +220,8 @@ export default {
         .catch(() => {});
     },
 
-    handleCurrentChange(currentRow) {
-      console.log(currentRow);
+    clickCurrentChange(currentRow) {
+      console.log('子组件',currentRow);
       this.$emit("option-supplier", currentRow);
     }
   }
