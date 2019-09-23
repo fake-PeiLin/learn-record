@@ -234,13 +234,16 @@ export default {
       this.dialogSupplierVisible = true;
     },
 
+// 进度到这里，学good里的编辑
+
+
     handleEdit(id) {
       this.handleAdd();
       goodsApi.getById(id).then(response => {
         const resp = response.data;
         if (resp.flag) {
           this.pojo = resp.data;
-        }
+        }                                                 
       });
     },
 

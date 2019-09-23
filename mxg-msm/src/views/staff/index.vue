@@ -10,7 +10,7 @@
       <el-form-item>
         <el-button type="primary" @click="fetchData">查询</el-button>
         <el-button type="primary" @click="handleAdd">新增</el-button>
-        <el-button>重置</el-button>
+        <el-button @click="$refs['searchForm'].resetFields()">重置</el-button>
       </el-form-item>
     </el-form>
 
@@ -70,11 +70,11 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button
+        <!-- <el-button
           type="primary"
           @click="pojo.id === null ? addData('pojoForm'): updateData('pojoForm')"
-        >确 定</el-button>
-        <!-- <el-button type="primary" @click="addData('pojoForm')">确 定</el-button> -->
+        >确 定</el-button>-->
+        <el-button type="primary" @click="addData('pojoForm')">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -97,12 +97,12 @@ export default {
       },
       dialogFormVisible: false,
       pojo: {
-          username:'',
-          name:'',
-          age:'',
-          mobile:'',
-          salary:'',
-          entryDate:'',
+        username: "",
+        name: "",
+        age: "",
+        mobile: "",
+        salary: "",
+        entryDate: ""
       },
       rules: {
         username: [
@@ -118,11 +118,13 @@ export default {
   },
 
   methods: {
-    handleSizeChange() {
-      console.log("handleSizeChange");
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.fetchData();
     },
-    handleCurrentChange() {
-      console.log("handleCurrentChange");
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.fetchData();
     },
     fetchData() {
       staffApi
@@ -140,12 +142,18 @@ export default {
         this.$refs["pojoForm"].resetFields();
       });
     },
+
     addData(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          //提交表单
           staffApi.add(this.pojo).then(response => {
             const resp = response.data;
             if (resp.flag) {
+              this.$message({
+                message: "新增成功, 初始密码为:123456",
+                type: "warning"
+              });
               this.fetchData();
               this.dialogFormVisible = false;
             } else {
@@ -159,6 +167,37 @@ export default {
           return false;
         }
       });
+    },
+
+    handleEdit(id) {
+      this.handleAdd();
+      staffApi.getById(id).then(response => {
+        const resp = response.data;
+        if (resp.flag) {
+          this.pojo = resp.data;
+        }
+      });
+    },
+
+    handleDelete(id) {
+      console.log(id);
+      this.$confirm("确认删除这条数据吗?", "提示", {
+        confirmButtonText: "确认",
+        cancleButtonText: "取消"
+      })
+        .then(() => {
+          staffApi.deleteById(id).then(response => {
+            const resp = response.data;
+            this.$message({
+              message: resp.message,
+              type: resp.flag ? "success" : "error"
+            });
+            if (resp.flag) {
+              this.fetchData();
+            }
+          });
+        })
+        .catch(() => {});
     }
   }
 };
