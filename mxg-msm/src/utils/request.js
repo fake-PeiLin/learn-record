@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Loading } from 'element-ui'
+import { Loading, Message } from 'element-ui'
 
 const loading = {
     loadingInstance: null,
@@ -19,7 +19,7 @@ const loading = {
         if (this.loadingInstance !== null) {
             this.loadingInstance.close()
         }
-        this.loadingInstance=null
+        this.loadingInstance = null
     }
 }
 
@@ -39,16 +39,26 @@ request.interceptors.request.use(config => {
 
 request.interceptors.response.use(response => {
     loading.close()
+    const resp = response.data
+    if (resp.code !== 2000) {
+        Message({
+            message: resp.message || '系统异常',
+            type: 'warning',
+            duration: 5 * 1000
+        })
+    }
+
     return response
 }, error => {
     loading.close()
+    console.log('response.erro', error.response.status)
+    Message({
+        message: error.message,
+        type:'error',
+        duration: 5*1000
+    })
     return Promise.reject(error);
 })
 
-// http://localhost:8888/dev-api/db.json
-
-// request.get('/db.json').then(response => {
-//     console.log(response.data)
-// })
 
 export default request
