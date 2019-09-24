@@ -22,11 +22,22 @@ const store = new Vuex.Store({
         add(context, n) {
             context.commit('increment', n)
         },
-        decrement({commit,state}){
-            console.log('actions.decrement.sate.count',state.count)
+        decrement({ commit, state }) {
+            console.log('actions.decrement.sate.count', state.count)
             commit('decrement')
         }
-           
+    },
+
+    getters: {
+        desc(state) {
+            if (state.count < 50) {
+                return '吃饭'
+            } else if (state.count < 100) {
+                return '睡觉'
+            } else {
+                return '打豆豆'
+            }
+        }
     }
 })
 

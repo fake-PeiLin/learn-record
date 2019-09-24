@@ -3,6 +3,7 @@
     count: {{ $store.state.count }}
     <button @click="addCount">加法</button>
     <button @click="decrement">减法</button>
+    派生属性desc: {{ $store.getters.desc }}
   </div>
 </template>
 
