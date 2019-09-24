@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-const home = {
+const store = new Vuex.Store({
     state: {
         count: 1
     },
@@ -38,29 +38,6 @@ const home = {
                 return '打豆豆'
             }
         }
-    }
-}
-
-const goods={
-    state:{
-
-    },
-    mutations:{
-
-    },
-    actions:{
-
-    },
-    getters:{
-
-    }
-}
-
-const store = new Vuex.Store({
-    modules:{
-        home,
-        goods,
-
     }
 })
 
