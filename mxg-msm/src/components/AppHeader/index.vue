@@ -122,12 +122,26 @@ export default {
     },
     handlePwd() {
       this.dialogFormVisible = true;
+      this.$nextTick(()=>{
+        this.$refs['ruleForm'].resetFields()
+      })
     },
 
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           console.log("校验成功");
+          passwordApi.updatePwd(this.user.id,this.ruleForm.checkPass).then(response=>{
+            const resp=response.data
+            this.$message({
+              message: resp.message,
+              type: resp.falg ? 'success' : 'warning'
+            })
+            if(resp.flag){
+              this.handleLogout()
+              this.dialogFormVisible=false
+            }
+          })
         } else {
           return false;
         }
