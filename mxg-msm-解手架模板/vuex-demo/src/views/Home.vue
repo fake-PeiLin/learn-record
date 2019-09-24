@@ -11,10 +11,12 @@ export default {
   methods:{
     addCount(){
       console.log(this.$store.state.count)
-      this.$store.commit('increment',10)
+      // this.$store.commit('increment',10)
+      this.$store.dispatch('add', 5)
     },
     decrement(){
-      this.$store.commit('decrement')
+      // this.$store.commit('decrement')
+      this.$store.dispatch('decrement')
     }
   }
 }
