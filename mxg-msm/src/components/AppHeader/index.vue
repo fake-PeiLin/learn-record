@@ -7,7 +7,7 @@
 
     <el-dropdown @command="handleCommand">
       <span class="el-dropdown-link">
-        下拉菜单
+        {{user.name}}
         <i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
@@ -18,42 +18,77 @@
 
     <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="400px">
       <el-form
-      :model="ruleForm"
-      status-icon
-      :rules="rules"
-      ref="ruleForm"
-      label-width="100px"
-      style="width: 300px"
-    >
-      <el-form-item label="原密码" prop="oldPass">
-        <el-input type="password" v-model="ruleForm.oldPass" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="新密码" prop="pass">
-        <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="确认密码" prop="checkPass">
-        <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
-      </el-form-item>
-    </el-form>
+        :model="ruleForm"
+        status-icon
+        :rules="rules"
+        ref="ruleForm"
+        label-width="100px"
+        style="width: 300px"
+      >
+        <el-form-item label="原密码" prop="oldPass">
+          <el-input type="password" v-model="ruleForm.oldPass" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="新密码" prop="pass">
+          <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="checkPass">
+          <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+          <el-button @click="$refs['ruleForm'].resetFields()">重置</el-button>
+        </el-form-item>
+      </el-form>
     </el-dialog>
-
-    
   </div>
 </template>
 
 <script>
 import { logout } from "@/api/login.js";
+import passwordApi from "@/api/password";
 export default {
-  data(){
-    return{
-      dialogFormVisible: false,
-      ruleForm: {},
-      rules:{}
+  data() {
+    const validateOldPass = (rule, value, callback) => {
+      passwordApi.checkPwd(this.user.id, value).then(response => {
+        const resp = response.data;
+        if (resp.flag) {
+          callback();
+        } else {
+          callback(new Error(resp.message));
+        }
+      });
+    };
+
+    const validatePass = (rule, value, callback) => {
+      if(value !== this.ruleForm.pass){
+        callback(new Error('两次输入的密码不一致'))
+      }else{
+        callback()
+      }
     }
+
+
+
+    return {
+      user: JSON.parse(localStorage.getItem("mxg-msm-user")),
+      dialogFormVisible: false,
+      ruleForm: {
+        oldPass: "",
+        pass: "",
+        checkPass: ""
+      },
+      rules: {
+        oldPass: [
+          { required: true, message: "原密码不能为空", trigger: "blur" },
+          { validator: validateOldPass, trigger: "blur" }
+        ],
+        pass: [{ required: true, message: "新密码不能为空", trigger: "blur" }],
+        checkPass: [
+          { required: true, message: "确认密码不能为空", trigger: "blur" },
+          { validator: validatePass, trigger: "change" }
+        ]
+      }
+    };
   },
 
   methods: {
@@ -85,8 +120,18 @@ export default {
         }
       });
     },
-    handlePwd(){
-      this.dialogFormVisible=true
+    handlePwd() {
+      this.dialogFormVisible = true;
+    },
+
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          console.log("校验成功");
+        } else {
+          return false;
+        }
+      });
     }
   }
 };

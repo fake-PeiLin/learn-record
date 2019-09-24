@@ -1,22 +1,22 @@
 import request from '@/utils/request'
 
-export default{
-    checkPwd(userId,Password){
+export default {
+    checkPwd(userId, password) {
         return request({
             url: '/user/pwd',
             method: 'post',
-            data:{
+            data: {
                 userId,
                 password
             }
         })
     },
 
-    updatePwd(userId,Password){
+    updatePwd(userId, password) {
         return request({
             url: '/user/pwd',
             method: 'put',
-            data:{
+            data: {
                 userId,
                 password
             }
