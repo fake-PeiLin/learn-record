@@ -31,7 +31,7 @@ const user = {
                 })
             })
         },
-        GetUserInfo({ commit }, state) {
+        GetUserInfo({ commit, state }) {
             return new Promise((resolve, reject) => {
                 getUserInfo(state.token).then(response => {
                     const respUser = response.data
