@@ -30,6 +30,17 @@ const user = {
                     reject(error)
                 })
             })
+        },
+        GetUserInfo({ commit }, state) {
+            return new Promise((resolve, reject) => {
+                getUserInfo(state.token).then(response => {
+                    const respUser = response.data
+                    commit('SET_USER', respUser.data)
+                    resolve(respUser)
+                }).catch(error => {
+                    reject(error)
+                })
+            })
         }
     }
 }
