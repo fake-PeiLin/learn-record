@@ -5,7 +5,7 @@ import { resolve } from 'url'
 
 const user = {
     state: {
-        token: null,
+        token: getToken(),
         user: null
     },
 

@@ -10,10 +10,12 @@
 
  import router from './router'
  import {getUserInfo} from './api/login'
+ import store from './store'
 
  router.beforeEach((to, from , next) => {
     // 1. 获取token
-    const token = localStorage.getItem('mxg-msm-token')
+    // const token = localStorage.getItem('mxg-msm-token')
+    const token=store.state.user.token
     console.log('token', token)
     
     if(!token) {
