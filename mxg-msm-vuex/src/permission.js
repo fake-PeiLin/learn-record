@@ -34,12 +34,14 @@ router.beforeEach((to, from, next) => {
             next()
         } else {
             // 1.2.2 请求路由非登录页面，先在本地查看是否有用户信息，
-            const userInfo = localStorage.getItem('mxg-msm-user')
-            console.log('userInfo',userInfo)
+            // const userInfo = localStorage.getItem('mxg-msm-user')
+            const userInfo = store.state.user.user
+            console.log('userInfo', userInfo)
             if (userInfo) {
                 // 本地获取到，则直接让它去目标路由
                 next()
             } else {
+                console.log('获取用户信息')
                 // 如果本地没有用户信息， 就通过token去获取用户信息，
                 store.dispatch('GetUserInfo').then(response => {
                     if (response.flag) {

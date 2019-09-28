@@ -6,7 +6,7 @@ import { resolve } from 'url'
 const user = {
     state: {
         token: getToken(),
-        user: null
+        user: getUser(),
     },
 
     mutations: {
@@ -16,6 +16,7 @@ const user = {
         },
         SET_USER(state, user) {
             state.user = user
+            setUser(user)
         }
     },
 
