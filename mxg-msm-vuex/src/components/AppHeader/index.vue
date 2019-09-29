@@ -148,7 +148,7 @@ export default {
               // 不管失败还是成功,都进行提醒
               this.$message({
                 message: resp.message,
-                type: resp.falg ? "succcess" : "warning"
+                type: resp.flag ? "success" : "warning"
               });
 
               if (resp.flag) {
