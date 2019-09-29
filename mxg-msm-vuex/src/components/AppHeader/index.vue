@@ -77,7 +77,7 @@ export default {
 
     // 注意:在 return 上面,而上面不能使用 逗号 , 结束
     return {
-      user: JSON.parse(localStorage.getItem("mxg-msm-user")),
+      user: this.$store.state.user.user,
       dialogFormVisible: false,
       ruleForm: {
         oldPass: "",
@@ -116,14 +116,8 @@ export default {
 
     // 退出系统
     handleLogout() {
-      logout(localStorage.getItem("mxg-msm-token")).then(response => {
-        const resp = response.data;
-        if (resp.flag) {
-          // 退出成功
-          // 清除本地数据
-          localStorage.removeItem("mxg-msm-token");
-          localStorage.removeItem("mxg-msm-user");
-          // 回到登录页面
+      this.$store.dispatch("Logout").then(response => {
+        if (response.flag) {
           this.$router.push("/login");
         } else {
           this.$message({
