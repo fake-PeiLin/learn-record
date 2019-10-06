@@ -1,4 +1,4 @@
-# mxg-diy
+# mxg-msm
 
 ## Project setup
 ```
