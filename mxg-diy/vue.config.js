@@ -5,11 +5,13 @@ module.exports = {
         https: false, //协议
         open: true, //启动服务时自动打开浏览器访问
         proxy:{
-            '/dev-api':{
+            // '/dev-api':{
+                [process.env.VUE_APP_BASE_API]:{
                 target: process.env.VUE_APP_SERVICE_URL,
                 changeOrigin:true,
                 pathRewrite:{
-                    '^/dev-api':'',
+                    // '^/dev-api':'',
+                    ['^'+process.env.VUE_APP_BASE_API]:''
                 }
             }
         }
