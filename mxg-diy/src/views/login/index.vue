@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { login, getUserInfo } from "@/api/login";
+
 export default {
   data() {
     return {
@@ -33,14 +35,41 @@ export default {
   },
   methods: {
     submitForm(formName) {
-        this.$refs[formName].validate(valid => {
-          if (valid) {
-              
-          } else {
-            console.log("验证失败");
-            return false;
-          }
-        });
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          login(this.form.username, this.form.password).then(response => {
+            const resp = response.data;
+            console.log(resp, resp.flag, resp.data.token);
+            if (resp.flag) {
+              getUserInfo(resp.data.token).then(response => {
+                const respUser = response.data;
+                if (respUser.flag) {
+                  console.log("userInfo", respUser.data);
+                  localStorage.setItem(
+                    "mgx-msm-user",
+                    JSON.stringify(respUser.data)
+                  );
+                  localStorage.setItem("mgx-msm-token", resp.data.token);
+                  this.$router.push("/");
+                } else {
+                  this.$message({
+                    message: respUser.message,
+                    type: "warning"
+                  });
+                }
+              });
+            } else {
+              this.$message({
+                message: resp.message,
+                type: "warning"
+              });
+            }
+          });
+        } else {
+          console.log("验证失败");
+          return false;
+        }
+      });
     }
   }
 };
