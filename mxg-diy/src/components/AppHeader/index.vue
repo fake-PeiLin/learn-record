@@ -29,11 +29,11 @@ export default {
               break;
               // 写到这里了
             case 'b':
-              logout( localStorage.getItem('mgx-msm-token')).then(response=>{
+              logout( localStorage.getItem('mxg-msm-token')).then(response=>{
                 const resp=response.data
                 if(resp.flag){
-                  localStorage.removeItem('mgx-msm-token')
-                  localStorage.removeItem('mgx-msm-user')
+                  localStorage.removeItem('mxg-msm-token')
+                  localStorage.removeItem('mxg-msm-user')
                   this.$router.push('/login')
                 }else{
                   this.$message({

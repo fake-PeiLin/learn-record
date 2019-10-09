@@ -46,10 +46,10 @@ export default {
                 if (respUser.flag) {
                   console.log("userInfo", respUser.data);
                   localStorage.setItem(
-                    "mgx-msm-user",
+                    "mxg-msm-user",
                     JSON.stringify(respUser.data)
                   );
-                  localStorage.setItem("mgx-msm-token", resp.data.token);
+                  localStorage.setItem("mxg-msm-token", resp.data.token);
                   this.$router.push("/");
                 } else {
                   this.$message({
