@@ -1,16 +1,8 @@
 <template>
-  <div class="main">
-    <app-link v-show="$route.path !== '/home'"></app-link>
-    <router-view></router-view>
-  </div>
+  <el-breadcrumb separator-class="el-icon-arrow-right">
+    <el-breadcrumb-item class="line" :to="{path:$route.path}">{{$route.meta.title}}</el-breadcrumb-item>
+  </el-breadcrumb>
 </template>
-
-<script>
-import AppLink from './Link'
-export default {
-    components:{AppLink}
-};
-</script>
 
 <style scoped>
 .el-breadcrumb {

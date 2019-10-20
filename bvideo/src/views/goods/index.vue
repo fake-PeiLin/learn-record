@@ -1,1 +1,3 @@
-goods
+<template>
+  <div>goods</div>
+</template>

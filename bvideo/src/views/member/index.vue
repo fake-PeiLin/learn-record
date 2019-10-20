@@ -1,1 +1,3 @@
-member
+<template>
+  <div>member</div>
+</template>
