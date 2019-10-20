@@ -72,6 +72,7 @@
     <el-dialog title="会员编辑" :visible.sync="dialogFormVisible" width="500px">
       <!-- status-icon 当表单校验不通过时, 输入框右侧有个 x 小图标 -->
       <el-form
+        :rules="rules"
         status-icon
         ref="pojoForm"
         :model="pojo"
@@ -138,6 +139,13 @@ const payTypeOptions = [
 export default {
   data() {
     return {
+      rules: {
+        cardNum: [{ required: true, message: "卡号不能为空", trigger: "blur" }],
+        name: [{ required: true, message: "姓名不能为空", trigger: "blur" }],
+        payType: [
+          { required: true, message: "请选择支付类型", trigger: "change" }
+        ]
+      },
       list: [],
       total: 0, // 总记录数
       currentPage: 1, // 当前页, 默认第1页
