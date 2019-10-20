@@ -53,10 +53,17 @@ export default {
     handleDele(id) {
       console.log("删除");
     },
+
     fetchData() {
-      memberApi.getList().then(response => {
-        this.list = response.data.data;
-      });
+      // 调用分页方法查询, 不要少了 this
+      memberApi
+        .search(this.currentPage, this.pageSize, this.searchMap)
+        .then(response => {
+          const reqs = response.data;
+          this.total = reqs.data.total;
+          this.list = reqs.data.rows;
+          console.log(this.total, this.list);
+        });
     }
   },
 
