@@ -24,8 +24,8 @@
     </el-table>
 
     <el-pagination
-      @size-change="fetchData"
-      @current-change="fetchData"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
       :current-page="currentPage"
       :page-sizes="[10, 20, 50]"
       :page-size="pageSize"
@@ -57,6 +57,14 @@ export default {
     this.fetchData();
   },
   methods: {
+    handleSizeChange(val){
+        this.pageSize=val
+        this.fetchData()
+    },
+    handleCurrentChange(val){
+        this.currentPage=val
+        this.fetchData()
+    },
     handleEdit(id) {
       console.log("编辑");
     },
