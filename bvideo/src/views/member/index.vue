@@ -119,7 +119,10 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addData('pojoForm')">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="pojo.id === null ? addData('pojoForm'): updateData('pojoForm')"
+        >确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -159,6 +162,7 @@ export default {
       },
       payTypeOptions, // 支付类型，ES6语法
       pojo: {
+        id: null,
         cardNum: "",
         name: "",
         birthday: "",
@@ -177,6 +181,30 @@ export default {
     this.fetchData();
   },
   methods: {
+    updateData(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          // 验证通过，提交
+          memberApi.update(this.pojo).then(response => {
+            const resp = response.data;
+            if (resp.flag) {
+              this.fetchData(); // 刷新列表数据
+              this.dialogFormVisible = false; // 关闭窗口
+            } else {
+              // 失败, 弹出提示
+              this.$message({
+                message: resp.message,
+                type: "warning"
+              });
+            }
+          });
+        } else {
+          // 验证不通过
+          return false;
+        }
+      });
+    },
+
     addData(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -225,10 +253,41 @@ export default {
       this.fetchData();
     },
     handleEdit(id) {
-      console.log("编辑");
+      this.handleAdd();
+      // 通过Id查询数据
+      memberApi.getById(id).then(response => {
+        const resp = response.data;
+        if (resp.flag) {
+          this.pojo = resp.data;
+        }
+      });
     },
+
     handleDele(id) {
-      console.log("删除");
+      console.log("删除", id);
+      this.$confirm("确认删除这条记录吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          // 确认
+          memberApi.deleteById(id).then(response => {
+            const resp = response.data;
+            //提示信息
+            this.$message({
+              type: resp.flag ? "success" : "error",
+              message: resp.message
+            });
+            if (resp.flag) {
+              // 删除成功，刷新列表
+              this.fetchData();
+            }
+          });
+        })
+        .catch(() => {
+          // 取消删除，不理会
+        });
     },
 
     fetchData() {

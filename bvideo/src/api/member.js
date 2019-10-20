@@ -1,10 +1,34 @@
 import request from "@/utils/request"
 export default {
-    add(pojo){
+
+    deleteById(id) {
         return request({
-            url:'/member',
-            method:'post',
-            data:pojo
+            url: `/member/${id}`, // 反单引号 ``
+            method: 'delete', // delete 方式提交
+        })
+    },
+
+    getById(id) {
+        return request({
+            url: `/member/${id}`, // 反单引号 ``
+
+            method: 'get'
+        })
+    },
+    // 更新
+    update(pojo) {
+        return request({
+            url: `/member/${pojo.id}`, // 反单引号 ``
+            method: 'put', // put 方式提交
+            data: pojo
+        })
+    },
+
+    add(pojo) {
+        return request({
+            url: '/member',
+            method: 'post',
+            data: pojo
         })
     },
 
