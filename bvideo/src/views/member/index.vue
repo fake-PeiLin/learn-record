@@ -22,6 +22,16 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <el-pagination
+      @size-change="fetchData"
+      @current-change="fetchData"
+      :current-page="currentPage"
+      :page-sizes="[10, 20, 50]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    ></el-pagination>
   </div>
 </template>
 
