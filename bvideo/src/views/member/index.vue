@@ -31,6 +31,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" @click="fetchData">查询</el-button>
+        <el-button @click="resetForm('searchForm')">重置</el-button>
       </el-form-item>
     </el-form>
 
@@ -103,6 +104,9 @@ export default {
     this.fetchData();
   },
   methods: {
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
     handleSizeChange(val) {
       this.pageSize = val;
       this.fetchData();
