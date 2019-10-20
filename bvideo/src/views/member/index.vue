@@ -1,5 +1,39 @@
 <template>
   <div>
+    <!-- 条件查询。 inline 属性设置表单变为行内的表单域 -->
+    <el-form ref="searchForm" :inline="true" :model="searchMap" style="margin-top: 20px;">
+      <!-- 有prop才可以重置 -->
+      <el-form-item prop="cardNum">
+        <el-input v-model="searchMap.cardNum" placeholder="会员卡号" style="width: 200px;"></el-input>
+      </el-form-item>
+      <el-form-item prop="name">
+        <el-input v-model="searchMap.name" placeholder="会员名称" style="width: 200px;"></el-input>
+      </el-form-item>
+      <el-form-item prop="payType">
+        <el-select v-model="searchMap.payType" placeholder="支付类型" style="width: 110px">
+          <!--key 标识， label 下拉显示的文本，vulue 表单值 -->
+          <el-option
+            v-for="option in payTypeOptions"
+            :key="option.type"
+            :label="option.name"
+            :value="option.type"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item prop="birthday">
+        <!-- value-format 是指定绑定值的格式 -->
+        <el-date-picker
+          value-format="yyyy-MM-dd"
+          v-model="searchMap.birthday"
+          type="date"
+          placeholder="出生日期"
+        ></el-date-picker>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" @click="fetchData">查询</el-button>
+      </el-form-item>
+    </el-form>
+
     <el-table :data="list" height="380" border style="width: 100%">
       <!--type="index" 获取索引值，从1开始； label 显示的标题; prop 数据字段名； width 列的宽度 -->
       <el-table-column type="index" label="序号" width="60"></el-table-column>
@@ -49,21 +83,33 @@ const payTypeOptions = [
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      total: 0, // 总记录数
+      currentPage: 1, // 当前页, 默认第1页
+      pageSize: 10, // 每页显示条数， 10条
+      searchMap: {
+        // 条件查询绑定的条件值
+        cardNum: "",
+        name: "",
+        payType: "",
+        birthday: ""
+      },
+      payTypeOptions // 支付类型，ES6语法
     };
   },
+
   // 钩子函数获取数据
   created() {
     this.fetchData();
   },
   methods: {
-    handleSizeChange(val){
-        this.pageSize=val
-        this.fetchData()
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.fetchData();
     },
-    handleCurrentChange(val){
-        this.currentPage=val
-        this.fetchData()
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.fetchData();
     },
     handleEdit(id) {
       console.log("编辑");
