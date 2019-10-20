@@ -177,6 +177,32 @@ export default {
     this.fetchData();
   },
   methods: {
+    addData(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          // 验证通过，提交添加
+          memberApi.add(this.pojo).then(response => {
+            const resp = response.data;
+            console.log(resp);
+            if (resp.flag) {
+              // 新增成功, 刷新列表数据
+              this.fetchData();
+              this.dialogFormVisible = false; //关闭窗口
+            } else {
+              // 失败, 弹出提示
+              this.$message({
+                message: resp.message,
+                type: "warning"
+              });
+            }
+          });
+        } else {
+          // 验证不通过
+          return false;
+        }
+      });
+    },
+
     handleAdd() {
       this.dialogFormVisible = true;
       this.$nextTick(() => {
@@ -187,17 +213,6 @@ export default {
       });
     },
 
-    addData(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          // 验证通过，提交添加
-          alert("Add submit!");
-        } else {
-          // 验证不通过
-          return false;
-        }
-      });
-    },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },

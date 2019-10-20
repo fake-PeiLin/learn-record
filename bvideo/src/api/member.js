@@ -1,5 +1,13 @@
 import request from "@/utils/request"
 export default {
+    add(pojo){
+        return request({
+            url:'/member',
+            method:'post',
+            data:pojo
+        })
+    },
+
     // 获取会员列表
     getList() {
         return request({
